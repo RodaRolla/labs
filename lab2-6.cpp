@@ -1,21 +1,22 @@
 #include <iostream>
 #include <math.h>
 #include <stdexcept>
+#include <fstream>
 
 using namespace std;
 
-// Ограничение последовательности
+// РћРіСЂР°РЅРёС‡РµРЅРёРµ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 #define LIMIT (100)
 
 #define ABS(n) ((n)<0?(-n):(n))
 
-// Как бы факториал, но он вещественный и имеет ограниченную точность.
+// РљР°Рє Р±С‹ С„Р°РєС‚РѕСЂРёР°Р», РЅРѕ РѕРЅ РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№ Рё РёРјРµРµС‚ РѕРіСЂР°РЅРёС‡РµРЅРЅСѓСЋ С‚РѕС‡РЅРѕСЃС‚СЊ.
 double factorial(double n) {
     //return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 	return (n <= 1) ? 1 : factorial(n - 1) * n;
 }
 
-// Пауза
+// РџР°СѓР·Р°
 void pause(string msg) {
     cin.clear();
     cout << msg;
@@ -28,36 +29,43 @@ int main(void) {
 	double u; 
 	double seq,func;
 	int i; 
+	double fmin,fmax,xmin,xmax;
+	int imin,imax;
+	
+	fmin=fmax=xmin=xmax=0.0;
 	
 	setlocale(LC_ALL, "Russian");
 
-	cout << "X = ";
-	cin >> x;
-	cout << "Precision = ";
-	cin >> precision;
+	ofstream fout("lab6.txt");
+	// РїСЂРѕРІРµСЂРёС‚СЊ РЅР° РѕС‚РєСЂС‹С‚РёРµ
 
-	// Последовательность
-    for (i=0, u=0, seq=0; i<LIMIT; i++) {
-    	seq+=(u=pow(x,3*i)/factorial(3*i));
-    	cout << "seq=" << seq << " i=" << i << " u=" << u << " x^(3i)=" << pow(x,3*i) << " (3i)!=" << factorial(3*i) << endl;
-    	if (ABS(u)<precision) break;
-    }
-
-    // Функция
-    func=exp(x)/3+2*exp(-x/2)*cos(x*sqrt(3)/2);
-
-	cout << endl;
-    cout << "Ряд         = " << seq << endl;
-    cout << "Точность    = " << u << endl;
-    cout << "Количество  = " << i << endl;
-    cout << "Функция     = " << func << endl;
-    cout << "Погрешность = " << precision << endl;
-
-    if (func!=0) {
-     	cout << "Отн. Погр.  = " << ABS((seq-func)/func) << endl;
-    } else {
-    	cout << "Не могу вычислить относительную погрешность при func==0" << endl;
-    }
-
-    pause("Нажмите Ентер >>> ");
+	precision=0.01;
+    fout << "N\tX\tР СЏРґ\tРўРѕС‡РЅРѕСЃС‚СЊ\tРљРѕР»РёС‡РµСЃС‚РІРѕ\tР¤СѓРЅРєС†РёСЏ\tРџРѕРіСЂРµС€РЅРѕСЃС‚СЊ" << endl;
+	int inum=0;
+	for (double x=-9.0; x<4.0; x+=0.1, inum++) {
+		// РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ
+	    for (i=0, u=0, seq=0; i<LIMIT; i++) {
+	    	seq+=(u=pow(x,3*i)/factorial(3*i));
+	    	//cout << "seq=" << seq << " i=" << i << " u=" << u << " x^(3i)=" << pow(x,3*i) << " (3i)!=" << factorial(3*i) << endl;
+	    	if (ABS(u)<precision) break;
+	    }
+	    // Р¤СѓРЅРєС†РёСЏ
+	    func=exp(x)/3+2*exp(-x/2)*cos(x*sqrt(3)/2);
+		// Output
+		fout << inum << "\t" << x << "\t" << seq << "\t" << u << "\t"<< i << "\t"<< func << "\t"<< precision << endl;
+		if (inum==0 || seq>fmax) {
+		 	fmax=seq;
+		 	imax=inum;
+		 	xmax=x;
+		}
+		if (inum==0 || seq<fmin) {
+		 	fmin=seq;
+		 	imin=inum;
+		 	xmin=x;
+		}
+	}
+	fout << "Max=" << fmax << " Line=" << imax << " X=" << xmax << endl;
+	fout << "Min" << fmin << " Line=" << imin << " X=" << xmin << endl;
+	fout.close();
+    pause("Р“РѕС‚РѕРІРѕ! РќР°Р¶РјРёС‚Рµ Р•РЅС‚РµСЂ >>> ");
 }
