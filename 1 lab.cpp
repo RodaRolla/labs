@@ -4,22 +4,18 @@ using namespace std;
 	int main(){
 	setlocale(LC_ALL, "Russian"); 
 	int a,b,c;
-	cout << "À = ";
+	cout << "Ð = ";
 	cin >> a;
 	cout << "B = ";
 	cin >> b;
 	cout << "C = ";
 	cin >> c;
 	if ((a+b>c) & (b+c>a) & (c+a>b)) 
-		cout << "òðåóãîëüíèê ñóùåñòâóåò" << endl;
+		cout << "Ñ‚Ñ€ÐµÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸Ðº ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚" << endl;
 	else 
-		cout<< "òðåóãîëüíèê íå ñóùåñòâóåò"<< endl;
+		cout<< "Ñ‚Ñ€ÐµÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸Ðº Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚"<< endl;
 return 0;
 }
-
-
-
-
 
 
 
